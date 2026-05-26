@@ -8,7 +8,7 @@ export default defineNuxtConfig({
   routeRules: {
     '/': { redirect: '/home' },
   },
-  modules: ['@nuxt/eslint', 'shadcn-nuxt', '@vueuse/nuxt'],
+  modules: ['@nuxt/eslint', '@vueuse/nuxt'],
   eslint: {
     config: {
       standalone: false,
@@ -27,9 +27,7 @@ export default defineNuxtConfig({
     plugins: [tailwindcss()],
     optimizeDeps: {
       include: [
-        'class-variance-authority',
         'clsx',
-        'reka-ui',
         'tailwind-merge',
       ],
     },
@@ -37,7 +35,7 @@ export default defineNuxtConfig({
   nitro: {
     devProxy: {
       '/api': {
-        target: process.env.NUXT_DEV_PROXY_TARGET || 'http://127.0.0.1:8080',
+        target: process.env.NUXT_DEV_PROXY_TARGET || 'http://127.0.0.1:8080/api',
         changeOrigin: true,
       },
     },

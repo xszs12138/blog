@@ -1,15 +1,12 @@
-<script lang="ts" setup>
-import TopInfoBackground from './components/TopInfoBackground.vue'
-
+<script setup lang="ts">
 definePageMeta({
   layout: 'default',
 })
 </script>
 
 <template>
-  <div>
-    <TopInfoBackground />
+  <div class="flex flex-col">
+    <HomeTopInfoBackground />
+    <HomeContentSection />
   </div>
 </template>
-
-<style></style>

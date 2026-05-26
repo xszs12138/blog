@@ -1,14 +1,14 @@
-import type { PageParams, PageResult } from '~/types/api';
-import type { PostDetail, PostListItem } from '~/types/post';
+import type { PageParams, PageResult } from '~/types/api'
+import type { PostDetail, PostListItem } from '~/types/post'
 
 export interface GetPostsParams extends PageParams {
-  categorySlug?: string;
-  tagSlug?: string;
-  keyword?: string;
+  categorySlug?: string
+  tagSlug?: string
+  keyword?: string
 }
 
 export function usePostsApi() {
-  const api = useApiClient();
+  const api = useApiClient()
 
   return {
     getPosts: (params?: GetPostsParams) =>
@@ -16,5 +16,5 @@ export function usePostsApi() {
 
     getPostBySlug: (slug: string) =>
       api<PostDetail>(`/web/posts/${encodeURIComponent(slug)}`),
-  };
+  }
 }

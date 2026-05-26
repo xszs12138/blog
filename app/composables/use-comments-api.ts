@@ -2,10 +2,10 @@ import type {
   CommentItem,
   CreateCommentParams,
   CreateCommentResult,
-} from '~/types/comment';
+} from '~/types/comment'
 
 export function useCommentsApi() {
-  const api = useApiClient();
+  const api = useApiClient()
 
   return {
     getCommentsByPostSlug: (slug: string) =>
@@ -21,5 +21,5 @@ export function useCommentsApi() {
           body,
         },
       ),
-  };
+  }
 }

@@ -1,9 +1,9 @@
-import type { ArchiveYear } from '~/types/archive';
+import type { ArchiveYear } from '~/types/archive'
 
 export function useArchivesApi() {
-  const api = useApiClient();
+  const api = useApiClient()
 
   return {
     getArchives: () => api<ArchiveYear[]>('/web/archives'),
-  };
+  }
 }
