@@ -23,8 +23,12 @@ const keyword = computed(() => {
 const { getCategories } = useCategoriesApi()
 const { getTags } = useTagsApi()
 
-const { data: filterMeta } = await useAsyncData(
+const filterMetaKey = computed(
   () => `post-filter-meta-${categorySlug.value ?? ''}-${tagSlug.value ?? ''}`,
+)
+
+const { data: filterMeta } = await useAsyncData(
+  () => filterMetaKey.value,
   async () => {
     const slug = categorySlug.value ?? tagSlug.value
     if (!slug) {

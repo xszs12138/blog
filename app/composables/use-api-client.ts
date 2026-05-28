@@ -1,4 +1,4 @@
-import { createApiClient } from "~/utils/api";
+import { createApiClient } from "~/utils/common/api";
 
 /**
  * 获取当前环境（SSR / 浏览器）下的 API 客户端。

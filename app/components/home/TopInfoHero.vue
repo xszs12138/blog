@@ -68,7 +68,7 @@ const displaySocialItems = computed(() =>
 </script>
 
 <template>
-  <div class="top-info-hero relative z-2 flex min-h-[inherit] flex-col items-center justify-center gap-11 px-6 pt-26 pb-16 text-center">
+  <div class="top-info-hero relative z-2 flex min-h-[inherit] flex-col items-center justify-center gap-8 px-5 pt-24 pb-12 text-center sm:gap-10 sm:px-6 sm:pt-26 sm:pb-14 lg:gap-11 lg:pb-16">
     <div class="flex w-full max-w-2xl flex-col items-center gap-4">
       <h1 class="top-info-hero__title m-0 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 font-heading font-bold leading-tight tracking-tight text-white">
         <span>Hi, I'm</span>

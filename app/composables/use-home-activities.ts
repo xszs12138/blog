@@ -1,6 +1,6 @@
 import type { ActivityItem } from '~/types/activity'
 import type { PostListItem } from '~/types/post'
-import { formatRelativeTime } from '~/utils/format-relative-time'
+import { formatRelativeTime } from '~/utils/common/format-relative-time'
 
 const FALLBACK_ACTIVITIES: ActivityItem[] = [
   {

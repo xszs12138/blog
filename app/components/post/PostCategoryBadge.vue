@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { categoryBadgeClass } from '~/utils/category-style'
+import { categoryBadgeClass } from '~/utils/category/category-style'
 
 defineProps<{
   name: string

@@ -13,7 +13,7 @@ function queryParam(value: unknown): string | undefined {
   return typeof value === 'string' && value.trim() ? value.trim() : undefined
 }
 
-export function usePostsList(options: UsePostsListOptions = {}) {
+export async function usePostsList(options: UsePostsListOptions = {}) {
   const pageSize = options.pageSize ?? 10
   const keyPrefix = options.keyPrefix ?? 'posts'
   const scrollToPostsAnchor = options.scrollToPostsAnchor ?? false
@@ -49,7 +49,7 @@ export function usePostsList(options: UsePostsListOptions = {}) {
       `${keyPrefix}-${page.value}-${categorySlug.value ?? ''}-${tagSlug.value ?? ''}-${keyword.value ?? ''}-${pageSize}`,
   )
 
-  const { data, status, refresh } = useAsyncData(
+  const { data, status, refresh } = await useAsyncData(
     () => listKey.value,
     async () => {
       try {

@@ -5,6 +5,7 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
+    "dev:host": "nuxt dev --host",
     "lint": "nuxt lint",
     "lint:fix": "nuxt lint --fix",
     "generate": "nuxt generate",
@@ -13,7 +14,10 @@
   },
   "dependencies": {
     "@lucide/vue": "^1.16.0",
+    "cheerio": "^1.2.0",
     "clsx": "^2.1.1",
+    "highlight.js": "^11.11.1",
+    "isomorphic-dompurify": "^3.14.0",
     "nuxt": "^4.4.6",
     "tailwind-merge": "^3.6.0",
     "vue": "^3.5.34",

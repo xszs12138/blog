@@ -54,8 +54,9 @@ function isActive(item: NavItem) {
 
 <template>
   <nav
-    class="flex items-center justify-between gap-4 rounded-2xl border border-blog-nav-border bg-blog-nav px-4 py-2.5 shadow-lg shadow-black/10 backdrop-blur-md dark:shadow-black/45 md:px-6 md:py-3"
-    aria-label="主导航">
+    class="flex items-center justify-between gap-2 rounded-2xl border border-blog-nav-border bg-blog-nav px-3 py-2 shadow-lg shadow-black/10 backdrop-blur-md sm:gap-4 sm:px-4 sm:py-2.5 md:px-6 md:py-3 dark:shadow-black/45"
+    aria-label="主导航"
+  >
     <SiteLogo />
 
     <ul class="hidden list-none flex-1 items-center justify-center gap-1 p-0 lg:flex lg:gap-2">
@@ -64,7 +65,7 @@ function isActive(item: NavItem) {
       </li>
     </ul>
 
-    <div class="flex shrink-0 items-center gap-2">
+    <div class="flex shrink-0 items-center gap-1.5 sm:gap-2">
       <BaseIconButton label="搜索">
         <Search class="size-4" aria-hidden="true" />
       </BaseIconButton>

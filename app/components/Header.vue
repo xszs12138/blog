@@ -3,9 +3,15 @@ const { isHeaderVisible } = useHeaderScroll()
 </script>
 
 <template>
-  <header class="header-bar pointer-events-none fixed inset-x-0 top-0 z-50 px-4 pt-4 md:px-6 md:pt-5"
-    :class="{ 'header-bar--hidden': !isHeaderVisible }" :inert="!isHeaderVisible || undefined">
-    <div class="mx-auto max-w-6xl" :class="isHeaderVisible ? 'pointer-events-auto' : 'pointer-events-none'">
+  <header
+    class="header-bar pointer-events-none fixed inset-x-0 top-0 z-50"
+    :class="{ 'header-bar--hidden': !isHeaderVisible }"
+    :inert="!isHeaderVisible || undefined"
+  >
+    <div
+      class="mx-auto w-full max-w-400 px-4 pt-3 sm:px-6 sm:pt-4 lg:px-10 xl:px-12"
+      :class="isHeaderVisible ? 'pointer-events-auto' : 'pointer-events-none'"
+    >
       <NavBar />
     </div>
   </header>

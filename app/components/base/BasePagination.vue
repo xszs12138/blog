@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ChevronLeft, ChevronRight } from '@lucide/vue'
-import { cn } from '~/utils/cn'
+import { cn } from '~/utils/common/cn'
 
 const props = withDefaults(
   defineProps<{

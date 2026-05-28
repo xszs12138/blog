@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { Bookmark, Calendar, Clock, Eye } from '@lucide/vue'
-import { estimateReadingMinutes } from '~/utils/estimate-reading-minutes'
-import { formatPostDate } from '~/utils/format-post-date'
-import { formatViewCount } from '~/utils/format-view-count'
+import { estimateReadingMinutes } from '~/utils/post/estimate-reading-minutes'
+import { formatPostDate } from '~/utils/common/format-post-date'
+import { formatViewCount } from '~/utils/common/format-view-count'
 
 const props = defineProps<{
   publishedAt?: string

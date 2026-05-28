@@ -1,29 +1,17 @@
 <script setup lang="ts">
 import { ChevronRight } from '@lucide/vue'
-import { getCategoryIcon } from '~/utils/category-icon'
-import { getCategoryTone } from '~/utils/category-style'
-import { cn } from '~/utils/cn'
+import { getCategoryIcon } from '~/utils/category/category-icon'
+import { getCategoryTone } from '~/utils/category/category-style'
+import { cn } from '~/utils/common/cn'
 
-const { data, status } = await useHomeSidebar()
+const { data } = await useHomeSidebar()
 
 const categories = computed(() => data.value?.categories ?? [])
-const isLoading = computed(() => status.value === 'pending')
 </script>
 
 <template>
-  <BaseCard>
-    <BaseSectionTitle title="分类" />
-
-    <ul
-      v-if="isLoading"
-      class="list-none space-y-2 p-0"
-      aria-busy="true"
-      aria-label="加载分类"
-    >
-      <li v-for="i in 5" :key="i" class="h-11 animate-pulse rounded-xl bg-muted/20" />
-    </ul>
-
-    <p v-else-if="!categories.length" class="text-sm text-muted-foreground">
+  <BaseCard title="分类">
+    <p v-if="!categories.length" class="text-sm text-muted-foreground">
       暂无分类
     </p>
 
@@ -33,11 +21,10 @@ const isLoading = computed(() => status.value === 'pending')
           :to="{ path: '/post', query: { categorySlug: item.slug } }"
           class="group flex items-center gap-3 rounded-xl px-2 py-2.5 transition-colors hover:bg-white/5"
         >
-          <span
-            :class="cn(
-              'inline-flex size-9 shrink-0 items-center justify-center rounded-lg bg-white/5',
-              getCategoryTone(item.slug, item.name).icon,
-            )"
+          <span :class="cn(
+            'inline-flex size-9 shrink-0 items-center justify-center rounded-lg bg-white/5',
+            getCategoryTone(item.slug, item.name).icon,
+          )"
           >
             <component :is="getCategoryIcon(item.slug, item.name)" class="size-4" aria-hidden="true" />
           </span>

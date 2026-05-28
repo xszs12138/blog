@@ -21,8 +21,12 @@ function scrollToTop() {
 
 <template>
   <ClientOnly>
-    <BaseIconButton v-if="isShow" label="返回顶部"
-      class="fixed size-10 right-10 bottom-10 z-50 cursor-pointer transition-all duration-300" @click="scrollToTop">
+    <BaseIconButton
+      v-if="isShow"
+      label="返回顶部"
+      class="fixed bottom-4 right-4 z-40 size-10 cursor-pointer transition-all duration-300 sm:bottom-6 sm:right-6 lg:bottom-10 lg:right-10"
+      @click="scrollToTop"
+    >
       <ArrowUp class="size-5 text-blog-nav-fg" />
     </BaseIconButton>
   </ClientOnly>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Component } from 'vue'
-import { cn } from '~/utils/cn'
+import { cn } from '~/utils/common/cn'
 
 const props = defineProps<{
   to: string
