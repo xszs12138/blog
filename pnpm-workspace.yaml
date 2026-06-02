@@ -1,5 +1,2 @@
-allowBuilds:
-  '@parcel/watcher': true
-  esbuild: true
-  unrs-resolver: false
-  vue-demi: set this to true or false
+packages:
+  - '.'
