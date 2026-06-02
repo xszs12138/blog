@@ -2,14 +2,13 @@
 import type { Component } from 'vue'
 
 import {
+  Archive,
   Gamepad2,
+  Images,
   List,
-  Moon,
-  NotebookPen,
-  Search,
-  Sun,
   User,
 } from '@lucide/vue'
+import PostSearchTrigger from '~/components/search/PostSearchTrigger.vue'
 
 interface NavItem {
   label: string
@@ -22,29 +21,41 @@ const route = useRoute()
 
 const navItems: NavItem[] = [
   {
-    label: 'Posts',
+    label: '文章',
     to: '/post',
     icon: List,
     match: path => path.startsWith('/post'),
   },
-  // {
-  //   label: 'Games',
-  //   to: '/games',
-  //   icon: Gamepad2,
-  //   match: path => path.startsWith('/games'),
-  // },
+  {
+    label: '归档',
+    to: '/archive',
+    icon: Archive,
+    match: path => path.startsWith('/archive'),
+  },
+  {
+    label: '相册',
+    to: '/albums',
+    icon: Images,
+    match: path => path.startsWith('/albums') || path.startsWith('/alums'),
+  },
+  {
+    label: '游戏',
+    to: '/games',
+    icon: Gamepad2,
+    match: path => path.startsWith('/games'),
+  },
   // {
   //   label: 'Notes',
   //   to: '/notes',
   //   icon: NotebookPen,
   //   match: path => path.startsWith('/notes'),
   // },
-  // {
-  //   label: 'About',
-  //   to: '/about',
-  //   icon: User,
-  //   match: path => path.startsWith('/about'),
-  // },
+  {
+    label: '关于',
+    to: '/about',
+    icon: User,
+    match: path => path.startsWith('/about'),
+  },
 ]
 
 function isActive(item: NavItem) {
@@ -54,9 +65,8 @@ function isActive(item: NavItem) {
 
 <template>
   <nav
-    class="flex items-center justify-between gap-2 rounded-2xl border border-blog-nav-border bg-blog-nav px-3 py-2 shadow-lg shadow-black/10 backdrop-blur-md sm:gap-4 sm:px-4 sm:py-2.5 md:px-6 md:py-3 dark:shadow-black/45"
-    aria-label="主导航"
-  >
+    class="blog-nav-glass flex items-center justify-between gap-2 rounded-2xl border border-blog-nav-border bg-blog-nav px-3 py-2 sm:gap-4 sm:px-4 sm:py-2.5 md:px-6 md:py-3"
+    aria-label="主导航">
     <SiteLogo />
 
     <ul class="hidden list-none flex-1 items-center justify-center gap-1 p-0 lg:flex lg:gap-2">
@@ -66,9 +76,7 @@ function isActive(item: NavItem) {
     </ul>
 
     <div class="flex shrink-0 items-center gap-1.5 sm:gap-2">
-      <BaseIconButton label="搜索">
-        <Search class="size-4" aria-hidden="true" />
-      </BaseIconButton>
+      <PostSearchTrigger />
       <BaseIconButton label="切换主题">
         <BaseColorModeButton />
       </BaseIconButton>

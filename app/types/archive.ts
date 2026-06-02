@@ -2,6 +2,9 @@ export interface ArchivePostRef {
   id: number;
   title: string;
   slug: string;
+  cover: string;
+  summary: string;
+  viewCount: number;
   publishedAt: string;
 }
 

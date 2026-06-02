@@ -8,12 +8,14 @@ export interface CategoryTone {
 
 const TONE_BY_SLUG: Record<string, CategoryTone> = {
   game: {
-    badge: 'bg-emerald-500/15 text-emerald-300 ring-emerald-400/25',
-    icon: 'text-emerald-400',
+    badge:
+      'bg-[var(--blog-chip-bg)] text-[var(--blog-chip-fg)] ring-[color-mix(in_srgb,var(--blog-accent)_28%,transparent)] dark:bg-emerald-500/15 dark:text-emerald-300 dark:ring-emerald-400/25',
+    icon: 'text-[var(--blog-accent)] dark:text-emerald-400',
   },
   games: {
-    badge: 'bg-emerald-500/15 text-emerald-300 ring-emerald-400/25',
-    icon: 'text-emerald-400',
+    badge:
+      'bg-[var(--blog-chip-bg)] text-[var(--blog-chip-fg)] ring-[color-mix(in_srgb,var(--blog-accent)_28%,transparent)] dark:bg-emerald-500/15 dark:text-emerald-300 dark:ring-emerald-400/25',
+    icon: 'text-[var(--blog-accent)] dark:text-emerald-400',
   },
   tech: {
     badge: 'bg-violet-500/15 text-violet-300 ring-violet-400/25',
@@ -34,8 +36,9 @@ const TONE_BY_SLUG: Record<string, CategoryTone> = {
 }
 
 const DEFAULT_TONE: CategoryTone = {
-  badge: 'bg-white/10 text-foreground/90 ring-white/15',
-  icon: 'text-muted-foreground',
+  badge:
+    'bg-[var(--blog-surface-muted)] text-[var(--blog-muted)] ring-border dark:bg-white/10 dark:text-foreground/90 dark:ring-white/15',
+  icon: 'text-[var(--blog-accent)] dark:text-muted-foreground',
 }
 
 const NAME_TO_SLUG: Record<string, string> = {

@@ -3,7 +3,7 @@ import BaseLayout from '../Layout/BaseLayout.vue'
 </script>
 
 <template>
-  <BaseLayout class="xl:min-h-[calc(100svh-2rem)]">
+  <BaseLayout page-scroll class="xl:min-h-[calc(100svh-2rem)]">
     <template #content>
       <PostList />
     </template>

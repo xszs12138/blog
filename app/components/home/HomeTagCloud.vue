@@ -15,7 +15,7 @@ const tags = computed(() => data.value?.tags ?? [])
         v-for="tag in tags"
         :key="tag.id"
         :to="{ path: '/post', query: { tagSlug: tag.slug } }"
-        class="inline-flex items-center gap-1 rounded-full border border-border bg-white/5 px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:border-accent/30 hover:text-foreground"
+        class="inline-flex items-center gap-1 rounded-full border border-[color-mix(in_srgb,var(--blog-accent)_22%,var(--blog-border))] bg-[var(--blog-chip-bg)] px-3 py-1.5 text-xs text-[var(--blog-chip-fg)] shadow-sm transition-colors hover:border-accent/35 hover:bg-[var(--blog-surface-hover)]"
       >
         <span>{{ tag.name }}</span>
         <span class="tabular-nums opacity-70">{{ tag.postCount }}</span>

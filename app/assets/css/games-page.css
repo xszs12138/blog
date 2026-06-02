@@ -1,0 +1,189 @@
+/* 游戏页：主区随站点主题；侧栏在暗色模式下保持浅色卡片 */
+
+.games-page {
+  --games-fg: var(--blog-fg);
+  --games-muted: var(--blog-muted);
+  --games-border: var(--blog-border);
+  --games-card-bg: var(--blog-card-bg);
+  --games-chip-bg: var(--blog-chip-bg);
+  --games-chip-border: rgb(76 130 88 / 18%);
+  --games-chip-active-bg: color-mix(in srgb, var(--blog-accent) 18%, var(--blog-chip-bg));
+  --games-chip-active-border: color-mix(in srgb, var(--blog-accent) 50%, transparent);
+  --games-chip-active-fg: var(--blog-chip-fg);
+  --games-progress-track: rgb(76 130 88 / 12%);
+  --games-playing-badge: #22c55e;
+}
+
+.dark .games-page {
+  --games-chip-bg: rgb(255 255 255 / 6%);
+  --games-chip-border: rgb(255 255 255 / 10%);
+  --games-progress-track: rgb(255 255 255 / 10%);
+}
+
+.games-sidebar-panel {
+  border-radius: 1rem;
+  border: 1px solid rgb(15 20 25 / 8%);
+  background: #fcfdfd;
+  color: #0f1419;
+  box-shadow:
+    0 1px 2px rgb(15 20 25 / 6%),
+    0 4px 16px rgb(15 20 25 / 6%);
+}
+
+.games-sidebar-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.games-sidebar-panel__title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-heading);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #0f1419;
+}
+
+.games-sidebar-panel__title-mark {
+  width: 3px;
+  height: 0.875rem;
+  border-radius: 999px;
+  background: #22a06b;
+}
+
+.games-sidebar-panel__link {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #5c6670;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.2s ease;
+}
+
+.games-sidebar-panel__link:hover {
+  color: #22a06b;
+}
+
+/* 卡片底部：多类型标签横向滚动 */
+.games-card-meta__tags {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--games-muted) 55%, transparent) transparent;
+}
+
+.games-card-meta__tags::-webkit-scrollbar {
+  height: 4px;
+}
+
+.games-card-meta__tags::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--games-muted) 45%, transparent);
+}
+
+.games-card-meta__tags::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--games-muted) 65%, transparent);
+}
+
+/*
+ * 游戏库：网格 / 列表纯 CSS 切换（不 remount、不改 URL）
+ * 动画时长与 utils/game/games-view-animation.ts 同步
+ */
+.games-view {
+  --games-anim-enter-duration: 780ms;
+  --games-anim-enter-stagger: 72ms;
+  --games-anim-switch-duration: 560ms;
+  --games-anim-switch-stagger: 58ms;
+  --games-anim-panel-duration: 450ms;
+}
+
+.games-view__list {
+  margin: 0;
+}
+
+.games-view--grid .games-view__list {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 640px) {
+  .games-view--grid .games-view__list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1536px) {
+  .games-view--grid .games-view__list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.games-view--list .games-view__list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.games-view--grid .games-view__panel--list,
+.games-view--list .games-view__panel--grid {
+  display: none;
+}
+
+.games-view__panel--grid,
+.games-view__panel--list {
+  min-width: 0;
+  transition:
+    opacity var(--games-anim-panel-duration) ease,
+    transform var(--games-anim-panel-duration) cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.games-view--switch .games-view__panel {
+  will-change: opacity, transform;
+}
+
+@keyframes games-card-enter {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes games-card-switch {
+  from {
+    opacity: 0.72;
+    transform: scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.games-view--enter .games-view__item {
+  animation: games-card-enter var(--games-anim-enter-duration) cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--game-stagger, 0) * var(--games-anim-enter-stagger));
+}
+
+.games-view--switch:not(.games-view--enter) .games-view__item {
+  animation: games-card-switch var(--games-anim-switch-duration) cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--game-stagger, 0) * var(--games-anim-switch-stagger));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .games-view__panel {
+    transition: none;
+  }
+
+  .games-view--enter .games-view__item,
+  .games-view--switch .games-view__item {
+    animation: none;
+  }
+}

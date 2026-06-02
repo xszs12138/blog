@@ -19,10 +19,10 @@ const categories = computed(() => data.value?.categories ?? [])
       <li v-for="item in categories" :key="item.id">
         <NuxtLink
           :to="{ path: '/post', query: { categorySlug: item.slug } }"
-          class="group flex items-center gap-3 rounded-xl px-2 py-2.5 transition-colors hover:bg-white/5"
+          class="group flex items-center gap-3 rounded-xl px-2 py-2.5 transition-colors hover:bg-[var(--blog-surface-hover)]"
         >
           <span :class="cn(
-            'inline-flex size-9 shrink-0 items-center justify-center rounded-lg bg-white/5',
+            'inline-flex size-9 shrink-0 items-center justify-center rounded-lg bg-[var(--blog-surface-muted)]',
             getCategoryTone(item.slug, item.name).icon,
           )"
           >

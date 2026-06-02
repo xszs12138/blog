@@ -1,6 +1,6 @@
 import type { MusicTrack } from '~/types/music'
 
-/** 临时静态歌单，后续替换为 /api/web/music 等接口 */
+/** API 不可用时的本地回退歌单 */
 export const demoMusicPlaylist: MusicTrack[] = [
   {
     id: 'demo-1',

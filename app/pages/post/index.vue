@@ -68,26 +68,9 @@ const pageTitle = computed(() => {
   return '全部文章'
 })
 
-const pageDescription = computed(() => {
-  if (categorySlug.value) {
-    return '该分类下的已发布文章'
-  }
-  if (tagSlug.value) {
-    return '该标签下的已发布文章'
-  }
-  if (keyword.value) {
-    return '匹配标题或摘要的文章'
-  }
-  return '浏览站点全部已发布文章'
-})
-
 const hasFilter = computed(
   () => Boolean(categorySlug.value || tagSlug.value || keyword.value),
 )
-
-function clearFilters() {
-  navigateTo({ path: route.path })
-}
 
 useHead(() => ({
   title: `${pageTitle.value} | xsZs Blog`,
@@ -96,37 +79,18 @@ useHead(() => ({
 
 <template>
   <main class="mx-auto max-w-3xl px-4 pb-16 pt-24 md:px-6 md:pt-28">
-    <header class="mb-8">
-      <NuxtLink
-        to="/home"
-        class="mb-4 inline-flex text-sm text-muted-foreground transition-colors hover:text-accent"
-      >
-        ← 返回首页
-      </NuxtLink>
-
-      <h1 class="font-heading text-2xl font-bold tracking-tight text-foreground md:text-3xl">
-        {{ pageTitle }}
-      </h1>
-      <p class="mt-2 text-sm text-muted-foreground">
-        {{ pageDescription }}
-      </p>
-
-      <button
-        v-if="hasFilter"
-        type="button"
-        class="mt-4 inline-flex items-center rounded-full border border-border bg-white/5 px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:border-accent/30 hover:text-foreground"
-        @click="clearFilters"
-      >
-        清除筛选
-      </button>
-    </header>
-
     <PostList
       :page-size="POST_LIST_PAGE_SIZE"
       list-key-prefix="post-archive"
       :scroll-to-posts-anchor="false"
       empty-title="暂无文章"
-      :empty-description="hasFilter ? '当前筛选条件下没有文章。' : '发布第一篇文章后，会显示在这里。'"
+      :empty-description="
+        keyword
+          ? `没有找到与「${keyword}」相关的文章，试试其他关键词。`
+          : hasFilter
+            ? '当前筛选条件下没有文章。'
+            : '发布第一篇文章后，会显示在这里。'
+      "
     />
   </main>
 </template>

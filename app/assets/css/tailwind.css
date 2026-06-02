@@ -5,6 +5,11 @@
 @import "./post-content.css";
 @import "./hljs-theme.css";
 @import "./waves.css";
+@import "./games-page.css";
+@import "./archive-page.css";
+@import "./gallery-page.css";
+@import "./live2d.css";
+@import "./canvas-nest.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -25,18 +30,31 @@
 }
 
 :root {
-  --blog-bg: #f4f6f8;
-  --blog-fg: #0f1419;
-  --blog-muted: #5c6670;
-  --blog-border: rgb(15 20 25 / 10%);
-  --blog-accent: #22a06b;
+  /* Firefly 风格：薄荷绿浅色主题 */
+  --blog-bg: #eef5ee;
+  --blog-fg: #2c3e50;
+  --blog-muted: #5f6f7a;
+  --blog-border: rgb(76 130 88 / 16%);
+  --blog-accent: #76b876;
   --blog-accent-fg: #ffffff;
-  --blog-nav-bg: rgb(255 255 255 / 88%);
-  --blog-nav-border: rgb(15 20 25 / 8%);
-  --blog-nav-fg: #0f1419;
-  --blog-nav-muted: rgb(15 20 25 / 50%);
-  --blog-hero-accent: #2d8a5e;
-  --blog-card-bg: #fcfdfd;
+  --blog-nav-bg: rgb(255 255 255 / 90%);
+  --blog-nav-border: rgb(76 130 88 / 14%);
+  --blog-nav-shadow: rgb(76 130 88 / 10%);
+  --blog-nav-fg: #2c3e50;
+  --blog-nav-muted: rgb(44 62 80 / 58%);
+  --blog-hero-accent: #5fa85f;
+  --blog-card-bg: #ffffff;
+  --blog-card-shadow:
+    0 1px 2px rgb(76 130 88 / 6%),
+    0 4px 14px rgb(76 130 88 / 7%),
+    0 10px 28px rgb(76 130 88 / 5%);
+  --blog-card-shadow-hover:
+    0 2px 8px rgb(76 130 88 / 10%),
+    0 14px 36px rgb(76 130 88 / 12%);
+  --blog-surface-hover: rgb(118 184 118 / 12%);
+  --blog-surface-muted: #e8f3e8;
+  --blog-chip-bg: #e8f3e8;
+  --blog-chip-fg: #4d8b4d;
   color-scheme: light;
 }
 
@@ -47,13 +65,54 @@
   --blog-border: rgb(255 255 255 / 10%);
   --blog-accent: #5ee9b5;
   --blog-accent-fg: #0a0c10;
-  --blog-nav-bg: rgb(10 12 16 / 95%);
-  --blog-nav-border: rgb(255 255 255 / 6%);
+  --blog-nav-bg: rgb(10 12 16 / 42%);
+  --blog-nav-border: rgb(255 255 255 / 14%);
+  --blog-nav-shadow: rgb(0 0 0 / 35%);
   --blog-nav-fg: #ffffff;
   --blog-nav-muted: rgb(255 255 255 / 45%);
   --blog-hero-accent: #88c096;
   --blog-card-bg: #10151a;
+  --blog-card-shadow:
+    0 1px 2px rgb(0 0 0 / 20%),
+    0 8px 24px rgb(0 0 0 / 18%);
+  --blog-card-shadow-hover:
+    0 2px 6px rgb(0 0 0 / 24%),
+    0 12px 32px rgb(0 0 0 / 22%);
+  --blog-surface-hover: rgb(255 255 255 / 6%);
+  --blog-surface-muted: rgb(255 255 255 / 5%);
+  --blog-chip-bg: rgb(255 255 255 / 6%);
+  --blog-chip-fg: var(--blog-hero-accent);
   color-scheme: dark;
+}
+
+@layer components {
+  .blog-nav-glass {
+    box-shadow:
+      0 4px 24px var(--blog-nav-shadow),
+      inset 0 1px 0 rgb(255 255 255 / 55%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    backdrop-filter: blur(20px) saturate(160%);
+  }
+
+  .dark .blog-nav-glass {
+    box-shadow:
+      0 8px 32px var(--blog-nav-shadow),
+      inset 0 1px 0 rgb(255 255 255 / 8%);
+  }
+
+  .blog-card {
+    box-shadow: var(--blog-card-shadow);
+  }
+
+  .blog-card-interactive {
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .blog-card-interactive:hover {
+    box-shadow: var(--blog-card-shadow-hover);
+  }
 }
 
 @layer base {
@@ -63,6 +122,27 @@
 
   html {
     @apply antialiased;
+  }
+
+  html:not(.dark) body {
+    background-color: var(--blog-bg);
+    background-image:
+      radial-gradient(
+        ellipse 100% 70% at 0% -10%,
+        color-mix(in srgb, #b8ddb8 40%, transparent),
+        transparent 58%
+      ),
+      radial-gradient(
+        ellipse 75% 55% at 100% 0%,
+        color-mix(in srgb, #d4ecd4 35%, transparent),
+        transparent 52%
+      ),
+      radial-gradient(
+        ellipse 90% 50% at 50% 100%,
+        color-mix(in srgb, var(--blog-accent) 14%, transparent),
+        transparent 55%
+      );
+    background-attachment: fixed;
   }
 
   body {

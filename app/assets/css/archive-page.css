@@ -1,0 +1,287 @@
+/* 归档页时间轴 */
+.archive-timeline {
+  --archive-axis-x: 3.75rem;
+  --archive-line: rgb(76 130 88 / 14%);
+  --archive-dot: var(--blog-accent);
+}
+
+.dark .archive-timeline {
+  --archive-line: rgb(255 255 255 / 10%);
+}
+
+.archive-timeline__line {
+  position: absolute;
+  top: 0.75rem;
+  bottom: 0;
+  left: var(--archive-axis-x);
+  width: 1px;
+  transform: translateX(-50%);
+  background: var(--archive-line);
+}
+
+.archive-timeline__dot {
+  position: absolute;
+  left: var(--archive-axis-x);
+  z-index: 1;
+  transform: translateX(-50%);
+}
+
+.archive-timeline__dot--year {
+  top: 0.85rem;
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 999px;
+  background: var(--archive-dot);
+  box-shadow: 0 0 0 4px var(--blog-card-bg);
+}
+
+.archive-timeline__dot--month {
+  top: 1.35rem;
+  width: 0.5625rem;
+  height: 0.5625rem;
+  border: 2px solid var(--archive-dot);
+  border-radius: 999px;
+  background: var(--blog-card-bg);
+}
+
+.archive-year {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--archive-axis-x) minmax(0, 1fr);
+  align-items: center;
+  padding: 0.5rem 0 1rem;
+}
+
+.archive-year__label {
+  grid-column: 2;
+  margin: 0;
+  padding-left: 2rem;
+  font-size: clamp(1.75rem, 4vw, 2rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: var(--blog-fg);
+}
+
+.archive-month {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--archive-axis-x) minmax(0, 1fr);
+  column-gap: 0;
+  padding-bottom: 1.5rem;
+}
+
+.archive-month:last-child {
+  padding-bottom: 0.25rem;
+}
+
+.archive-month__label {
+  padding-top: 1.125rem;
+  padding-right: 0.875rem;
+  text-align: right;
+  font-size: 0.875rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--blog-muted);
+}
+
+.archive-month__body {
+  min-width: 0;
+  padding-left: 0.25rem;
+}
+
+@media (min-width: 640px) {
+  .archive-timeline {
+    --archive-axis-x: 4rem;
+  }
+
+  .archive-month__body {
+    padding-left: 2rem;
+  }
+}
+
+.archive-month__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.archive-month__list > li + li {
+  margin-top: 0.875rem;
+}
+
+/* 归档卡片：与 UI 稿一致 — 白底、中性边框、标题与类型标签同行 */
+.archive-entry-card {
+  display: flex;
+  align-items: stretch;
+  gap: 1rem;
+  padding: 1rem 1.125rem;
+  border: 1px solid var(--blog-border);
+  border-radius: 0.875rem;
+  background: var(--blog-card-bg);
+  text-decoration: none;
+  box-shadow: var(--blog-card-shadow);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.archive-entry-card:hover {
+  border-color: color-mix(in srgb, var(--blog-accent) 28%, var(--blog-border));
+  box-shadow: var(--blog-card-shadow-hover);
+}
+
+.archive-entry-card:focus-visible {
+  outline: none;
+  border-color: color-mix(in srgb, var(--blog-accent) 45%, var(--blog-border));
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--blog-accent) 22%, transparent);
+}
+
+.archive-entry-card__content {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.archive-entry-card__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.archive-entry-card__badge {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0.125rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.25rem;
+  color: var(--blog-chip-fg);
+  background: var(--blog-chip-bg);
+}
+
+.dark .archive-entry-card__badge {
+  color: var(--blog-hero-accent);
+  background: color-mix(in srgb, var(--blog-accent) 12%, transparent);
+}
+
+.archive-entry-card__title {
+  margin: 0;
+  min-width: 0;
+  flex: 1;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.45;
+  color: var(--blog-fg);
+  transition: color 0.2s ease;
+}
+
+@media (min-width: 640px) {
+  .archive-entry-card__title {
+    font-size: 1.0625rem;
+  }
+}
+
+.archive-entry-card:hover .archive-entry-card__title {
+  color: color-mix(in srgb, var(--blog-fg) 88%, var(--blog-accent));
+}
+
+.archive-entry-card__summary {
+  margin: 0;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--blog-muted);
+}
+
+.archive-entry-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-top: auto;
+  padding-top: 0.125rem;
+  font-size: 0.75rem;
+  color: color-mix(in srgb, var(--blog-muted) 92%, transparent);
+}
+
+.archive-entry-card__meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.archive-entry-card__thumb {
+  position: relative;
+  flex-shrink: 0;
+  width: 5.5rem;
+  align-self: center;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 0.625rem;
+  background: color-mix(in srgb, var(--blog-muted) 8%, transparent);
+}
+
+@media (min-width: 640px) {
+  .archive-entry-card {
+    gap: 1.25rem;
+    padding: 1.125rem 1.25rem;
+  }
+
+  .archive-entry-card__thumb {
+    width: 6.75rem;
+  }
+}
+
+.archive-entry-card__thumb-fallback {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--blog-accent) 10%, transparent),
+    color-mix(in srgb, var(--blog-muted) 6%, transparent)
+  );
+  font-size: 0.6875rem;
+  color: var(--blog-muted);
+}
+
+.archive-load-more {
+  display: inline-flex;
+  cursor: pointer;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 1rem;
+  border: 1px dashed var(--blog-border);
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--blog-muted);
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.archive-load-more:hover {
+  border-color: color-mix(in srgb, var(--blog-accent) 35%, var(--blog-border));
+  color: var(--blog-fg);
+  background: color-mix(in srgb, var(--blog-accent) 6%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .archive-entry-card,
+  .archive-entry-card__title {
+    transition: none;
+  }
+}

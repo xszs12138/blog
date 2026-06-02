@@ -10,10 +10,10 @@ defineProps<{
   <article class="group">
     <NuxtLink
       :to="`/post/${post.slug}`"
-      class="flex flex-col gap-3 rounded-2xl border border-border bg-blog-card p-3 shadow-sm transition-colors hover:border-accent/25 sm:flex-row sm:gap-5 sm:p-5 dark:shadow-black/20"
+      class="blog-card blog-card-interactive flex h-56 flex-col gap-2.5 overflow-hidden rounded-2xl border border-border bg-blog-card px-3 py-2 transition-colors hover:border-accent/25 sm:h-60 sm:flex-row sm:gap-4 sm:px-4 sm:py-2"
     >
       <div
-        class="relative aspect-16/10 w-full shrink-0 overflow-hidden rounded-xl bg-muted/20 sm:aspect-auto sm:h-full sm:w-72 md:w-80"
+        class="relative h-40 w-full shrink-0 overflow-hidden rounded-xl bg-muted/20 sm:h-full sm:w-80 md:w-96"
       >
         <img
           v-if="post.cover"
@@ -35,8 +35,8 @@ defineProps<{
         </div>
       </div>
 
-      <div class="flex min-w-0 flex-1 flex-col justify-between gap-3 py-0.5">
-        <div>
+      <div class="flex min-h-0 min-w-0 flex-1 flex-col justify-between gap-2 py-0.5">
+        <div class="min-h-0">
           <h3
             class="line-clamp-2 font-heading text-base font-semibold leading-snug text-foreground transition-colors group-hover:text-accent sm:text-lg"
           >
@@ -46,7 +46,12 @@ defineProps<{
             {{ post.summary || '暂无摘要' }}
           </p>
         </div>
-        <PostMetaRow :published-at="post.publishedAt" :summary="post.summary" :view-count="post.viewCount" />
+        <PostMetaRow
+          class="shrink-0"
+          :published-at="post.publishedAt"
+          :summary="post.summary"
+          :view-count="post.viewCount"
+        />
       </div>
     </NuxtLink>
   </article>

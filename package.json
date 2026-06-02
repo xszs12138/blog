@@ -10,18 +10,27 @@
     "lint:fix": "nuxt lint --fix",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
+    "start": "node scripts/pm2-start.mjs",
+    "pm2:start": "pm2 start ecosystem.config.cjs --cwd .",
+    "pm2:start:output": "pm2 start ecosystem.output.cjs",
+    "pm2:reload": "pm2 reload xszs-blog",
+    "pm2:stop": "pm2 stop xszs-blog",
+    "pm2:logs": "pm2 logs xszs-blog",
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
     "@lucide/vue": "^1.16.0",
+    "@vueuse/motion": "^3.0.3",
     "cheerio": "^1.2.0",
     "clsx": "^2.1.1",
     "highlight.js": "^11.11.1",
     "isomorphic-dompurify": "^3.14.0",
+    "markdown-it": "^14.2.0",
     "nuxt": "^4.4.6",
     "tailwind-merge": "^3.6.0",
     "vue": "^3.5.34",
-    "vue-router": "^5.0.7"
+    "vue-router": "^5.0.7",
+    "wl-live2d": "1.0.8"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^9.0.0",

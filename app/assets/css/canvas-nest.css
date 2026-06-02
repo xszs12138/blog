@@ -1,0 +1,9 @@
+/* 粒子连线层在内容之下，不拦截点击 */
+.canvas-nest-bg {
+  pointer-events: none;
+}
+
+#__nuxt {
+  position: relative;
+  z-index: 1;
+}

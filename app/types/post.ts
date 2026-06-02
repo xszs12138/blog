@@ -26,6 +26,8 @@ export interface PostListItem {
 export interface PostNeighbor {
   title: string;
   slug: string;
+  cover: string;
+  publishedAt?: string;
 }
 
 export interface PostDetail extends PostListItem {
