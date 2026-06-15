@@ -2,7 +2,7 @@
 import type { TocItem } from '~/types/toc'
 import BaseLayout from '~/components/Layout/BaseLayout.vue'
 import { enrichNeighborCovers } from '~/utils/post/enrich-post-neighbors'
-import { preparePostHtml } from '~/utils/post/prepare-post-html'
+import { preparePostContent } from '~/utils/post/prepare-post-content'
 
 definePageMeta({
   layout: 'default',
@@ -58,7 +58,7 @@ const prepared = computed(() => {
   if (!post.value?.content?.trim()) {
     return { html: '', toc: [] as TocItem[] }
   }
-  return preparePostHtml(post.value.content)
+  return preparePostContent(post.value.content, post.value.contentType)
 })
 
 const toc = computed(() => prepared.value.toc)
@@ -71,8 +71,6 @@ const articleRef = computed((): HTMLElement | null => {
 
 const { visibleIds, activeId, scrollToHeading } = useArticleToc(articleRef, toc)
 
-const hasCover = computed(() => Boolean(post.value?.cover?.trim()))
-
 useHead(() => ({
   title: post.value?.title ? `${post.value.title} | xsZs Blog` : '文章详情',
 }))
@@ -81,8 +79,8 @@ useHead(() => ({
 <template>
   <div class="post-detail">
     <template v-if="post">
-      <PostDetailHero v-if="hasCover" :cover="post.cover" :title="post.title" />
-      <BaseLayout>
+      <PostDetailHero :cover="post.cover" :title="post.title" />
+      <BaseLayout overlap-main>
         <template #content>
           <div class="min-w-0">
             <BaseCard class="post-detail__card overflow-hidden p-0 shadow-md dark:shadow-black/30">

@@ -2,7 +2,9 @@
 import process from 'node:process'
 import tailwindcss from '@tailwindcss/vite'
 
-const devApiProxyTarget = process.env.NUXT_DEV_PROXY_TARGET || 'http://127.0.0.1:8080/api'
+const devApiProxyTarget = process.env.NUXT_DEV_PROXY_TARGET
+  || 'http://127.0.0.1:8080/api' // 本地
+// || 'https://tjausbj.com.cn/api' // 线上
 
 function devLiveWebSocketUrl(httpApiBase: string): string {
   const url = new URL(httpApiBase)
