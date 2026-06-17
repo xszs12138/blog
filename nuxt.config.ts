@@ -23,13 +23,42 @@ export default defineNuxtConfig({
     '/': { redirect: '/home' },
     '/alums': { redirect: '/albums' },
   },
-  modules: ['@nuxt/eslint', '@vueuse/nuxt', '@vueuse/motion/nuxt'],
+  modules: [
+    '@nuxt/eslint',
+    '@vueuse/nuxt',
+    '@vueuse/motion/nuxt',
+    '@antdv-next/nuxt',
+  ],
+  antd: {
+    icon: false,
+    include: [
+      'Button',
+      'Calendar',
+      'Col',
+      'Drawer',
+      'Empty',
+      'Input',
+      'Masonry',
+      'Menu',
+      'Modal',
+      'Pagination',
+      'RadioButton',
+      'RadioGroup',
+      'Row',
+      'Segmented',
+      'Select',
+      'Spin',
+    ],
+  },
   eslint: {
     config: {
       standalone: false,
     },
   },
-  css: ['~/assets/css/tailwind.css'],
+  css: [
+    '~/assets/css/antd.css',
+    '~/assets/css/tailwind.css',
+  ],
   runtimeConfig: {
     /** SSR 请求 API 的绝对地址 */
     apiBase: process.env.NUXT_API_BASE || 'http://127.0.0.1:8080/api',
@@ -54,10 +83,21 @@ export default defineNuxtConfig({
     plugins: [tailwindcss()],
     optimizeDeps: {
       include: [
+        '@lucide/vue',
+        'antdv-next',
+        'antdv-next/locale/zh_CN',
         'clsx',
+        'dayjs',
+        'md-editor-v3',
+        'echarts',
+        'echarts/core',
         'tailwind-merge',
         'wl-live2d',
       ],
+    },
+    ssr: {
+      // wl-live2d 的 ESM 构建在 Node 侧使用 __dirname，禁止 SSR 解析
+      external: ['wl-live2d'],
     },
   },
   nitro: {

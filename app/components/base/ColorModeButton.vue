@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { Moon, Sun } from '@lucide/vue'
 
-const { isDark, toggleTheme } = useAppTheme()
+const isDark = useThemeDark()
 
 function switchTheme() {
-  toggleTheme()
+  isDark.value = !isDark.value
 }
 
 function startViewTransition(event: MouseEvent) {
@@ -45,13 +45,18 @@ function startViewTransition(event: MouseEvent) {
 
 <template>
   <ClientOnly>
-    <div class="rounded-full cursor-pointer opacity-70 hover:opacity-100 transition-opacity duration-300"
-      @click="startViewTransition">
+    <AButton
+      type="text"
+      shape="circle"
+      class="blog-nav-icon-btn"
+      aria-label="切换主题"
+      @click="startViewTransition"
+    >
       <Sun v-if="isDark" class="size-4" aria-hidden="true" />
       <Moon v-else class="size-4" aria-hidden="true" />
-    </div>
+    </AButton>
     <template #fallback>
-      <div class="size-4" />
+      <span class="inline-block size-9" aria-hidden="true" />
     </template>
   </ClientOnly>
 </template>

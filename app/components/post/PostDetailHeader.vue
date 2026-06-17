@@ -3,16 +3,16 @@ import type { PostDetail } from '~/types/post'
 import { Calendar, Clock, Eye } from '@lucide/vue'
 import { formatPostDate } from '~/utils/common/format-post-date'
 import { formatViewCount } from '~/utils/common/format-view-count'
-import { estimateReadingMinutesFromHtml } from '~/utils/post/prepare-post-html'
+import { estimateReadingMinutesFromText } from '~/utils/post/prepare-post-html'
 
 const props = defineProps<{
   post: PostDetail
-  contentHtml?: string
+  content?: string
 }>()
 
 const dateLabel = computed(() => formatPostDate(props.post.publishedAt))
 const readingMinutes = computed(() =>
-  estimateReadingMinutesFromHtml(props.contentHtml ?? props.post.summary),
+  estimateReadingMinutesFromText(props.content ?? props.post.summary),
 )
 const viewsLabel = computed(() => formatViewCount(props.post.viewCount))
 </script>

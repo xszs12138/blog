@@ -4,10 +4,14 @@ import type { GameViewMode } from '~/components/games/GameViewSwitcher.vue'
 import GameCard from '~/components/games/GameCard.vue'
 import GameGenreFilter from '~/components/games/GameGenreFilter.vue'
 import GameListItem from '~/components/games/GameListItem.vue'
+import GameViewSwitcher from '~/components/games/GameViewSwitcher.vue'
 import { gamesViewAnimHoldMs } from '~/utils/game/games-view-animation'
 
 const props = defineProps<{
   viewMode: GameViewMode
+}>()
+const emit = defineEmits<{
+  'update:viewMode': [value: GameViewMode]
 }>()
 
 const GAME_PAGE_SIZE = 12
@@ -61,6 +65,10 @@ const isEmpty = computed(() => games.value.length === 0)
 const viewClass = computed(() =>
   props.viewMode === 'list' ? 'games-view--list' : 'games-view--grid',
 )
+const viewModeModel = computed<GameViewMode>({
+  get: () => props.viewMode,
+  set: value => emit('update:viewMode', value),
+})
 
 /** 首次进入 / 筛选分页换列表：卡片入场（依赖 class 摘挂重启 CSS animation） */
 const enterActive = ref(false)
@@ -140,8 +148,10 @@ onBeforeUnmount(() => {
 
 <template>
   <section id="games" aria-label="游戏库">
-    <GameGenreFilter v-if="genres?.length" :genres="genres" :active-slug="activeGenreSlug" class="mb-6"
-      @select="setGenre" />
+    <div class="mb-6 flex flex-wrap items-center justify-between gap-3">
+      <GameGenreFilter v-if="genres?.length" :genres="genres" :active-slug="activeGenreSlug" @select="setGenre" />
+      <GameViewSwitcher v-model="viewModeModel" class="ml-auto shrink-0" />
+    </div>
     <BaseEmptyState v-if="isEmpty" title="暂无游戏" description="呜呜呜，还没有游戏呢！" />
     <div v-else class="flex flex-col gap-8">
       <div class="games-view" :class="[

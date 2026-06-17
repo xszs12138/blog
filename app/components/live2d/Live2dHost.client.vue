@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { wlLive2d } from 'wl-live2d'
+import type { Live2dInstance } from '~/composables/use-live2d'
 import { defaultLive2dOptions } from '~/config/live2d'
 
 const config = useRuntimeConfig()
 
-let instance: ReturnType<typeof wlLive2d> | null = null
+let instance: Live2dInstance | null = null
 
-function applyStageLayout(target: ReturnType<typeof wlLive2d>) {
+function applyStageLayout(target: Live2dInstance) {
   const wrapper = target.stage?.wrapper
   if (!wrapper) {
     return
@@ -21,10 +21,12 @@ function applyStageLayout(target: ReturnType<typeof wlLive2d>) {
   wrapper.style.pointerEvents = 'auto'
 }
 
-function mountLive2d() {
+async function mountLive2d() {
   if (!config.public.live2dEnabled) {
     return
   }
+
+  const { wlLive2d } = await import('wl-live2d')
 
   instance = wlLive2d({
     ...defaultLive2dOptions,
@@ -50,7 +52,7 @@ function destroyLive2d() {
 }
 
 onMounted(() => {
-  mountLive2d()
+  void mountLive2d()
 })
 
 onBeforeUnmount(() => {

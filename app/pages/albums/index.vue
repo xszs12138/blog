@@ -78,31 +78,18 @@ useHead({
 
 <template>
   <div class="gallery-page">
-    <div
-      v-if="initialPending"
-      class="gallery-masonry gallery-masonry--cols-2 gallery-masonry--cols-3 gallery-masonry--cols-4 gallery-masonry--cols-5"
-      aria-busy="true"
-    >
-      <div
-        v-for="i in 12"
-        :key="i"
-        class="gallery-masonry__item mb-2 h-36 animate-pulse break-inside-avoid rounded-md bg-muted/15 sm:h-44"
-      />
-    </div>
+    <GalleryMasonry v-if="initialPending" loading />
 
     <template v-else-if="items.length">
       <GalleryMasonry :images="items" />
       <div ref="sentinel" class="gallery-page__sentinel" aria-hidden="true" />
       <div v-if="loading && hasMore" class="gallery-page__loader" aria-hidden="true">
-        <span class="gallery-page__loader-dot" />
+        <ASpin size="small" />
       </div>
     </template>
 
-    <div
-      v-else
-      class="flex min-h-[70svh] items-center justify-center"
-      role="status"
-      aria-label="暂无图片"
-    />
+    <div v-else class="gallery-page__empty">
+      <AEmpty description="暂无图片" />
+    </div>
   </div>
 </template>

@@ -11,14 +11,10 @@ const tags = computed(() => data.value?.tags ?? [])
     </p>
 
     <div v-else class="flex flex-wrap gap-2">
-      <NuxtLink
-        v-for="tag in tags"
-        :key="tag.id"
-        :to="{ path: '/post', query: { tagSlug: tag.slug } }"
-        class="inline-flex items-center gap-1 rounded-full border border-[color-mix(in_srgb,var(--blog-accent)_22%,var(--blog-border))] bg-[var(--blog-chip-bg)] px-3 py-1.5 text-xs text-[var(--blog-chip-fg)] shadow-sm transition-colors hover:border-accent/35 hover:bg-[var(--blog-surface-hover)]"
-      >
+      <NuxtLink v-for="tag in tags" :key="tag.id" :to="{ path: '/post', query: { tagSlug: tag.slug } }"
+        class="blog-tag-chip inline-flex items-center gap-1 rounded-full border border-[color-mix(in_srgb,var(--blog-accent)_22%,var(--blog-border))] bg-(--blog-chip-bg) px-3 py-1.5 text-xs shadow-sm transition-colors hover:border-accent/35 hover:bg-(--blog-surface-hover)">
         <span>{{ tag.name }}</span>
-        <span class="tabular-nums opacity-70">{{ tag.postCount }}</span>
+        <span class="tabular-nums text-muted-foreground">{{ tag.postCount }}</span>
       </NuxtLink>
     </div>
   </BaseCard>

@@ -23,7 +23,7 @@ useHead({
   <div class="games-page min-h-screen bg-background text-foreground">
     <div class="mx-auto w-full max-w-400 px-4 pb-16 pt-24 sm:px-6 lg:px-10 xl:px-12">
       <div class="flex flex-col gap-8 xl:grid xl:grid-cols-[minmax(0,1fr)_18rem] xl:items-start  xl:gap-10">
-        <GameGrid :view-mode="viewMode" />
+        <GameGrid v-model:view-mode="viewMode" />
         <GamesSidebar />
       </div>
     </div>

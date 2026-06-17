@@ -3,6 +3,8 @@ const props = withDefaults(defineProps<{
   mode?: 'detail' | ''
   /** 文章详情：主栏上移叠在 Hero 波浪区（侧栏保持网格对齐） */
   overlapMain?: boolean
+  /** 是否渲染右侧栏（文章页无 TOC 时可关闭，避免空列） */
+  showRightSidebar?: boolean
   /**
    * true：中间主栏随页面滚动（首页文章列表）
    * false：侧栏独立滚动，主栏占满视口高度（详情等页可沿用）
@@ -11,17 +13,27 @@ const props = withDefaults(defineProps<{
 }>(), {
   mode: '',
   overlapMain: false,
+  showRightSidebar: true,
   pageScroll: false,
 })
 
 const { isHeaderVisible } = useHeaderScroll()
 
 const layoutClass = computed(() => {
+  if (props.overlapMain) {
+    return ''
+  }
   if (props.mode === 'detail') {
     return 'md:mt-24 mt-16'
   }
-  return ''
+  return 'mt-16'
 })
+
+const gridColsClass = computed(() =>
+  props.showRightSidebar
+    ? 'xl:grid-cols-[17rem_minmax(0,1fr)_18rem]'
+    : 'xl:grid-cols-[17rem_minmax(0,1fr)]',
+)
 
 const layoutStyle = computed(() => ({
   '--aside-top': isHeaderVisible.value ? '6rem' : '1.5rem',
@@ -56,10 +68,11 @@ const asideClass = computed(() => {
 <template>
   <div class="flex flex-col" :style="layoutStyle" :class="layoutClass">
     <slot name="header" />
-    <div class="mx-auto w-full max-w-400 px-4 pb-12 sm:px-6 lg:px-10 xl:px-12" :class="pageScroll ? '' : 'h-full'">
+    <div class="mx-auto w-full max-w-400 px-4 pb-12 sm:px-6 lg:px-10 xl:px-10" :class="pageScroll ? '' : 'h-full'">
       <div
-        class="layout-grid flex flex-col gap-6 xl:grid xl:grid-cols-[17rem_minmax(0,1fr)_17rem] xl:items-start xl:gap-8"
-        :class="gridClass">
+        class="layout-grid flex flex-col gap-5 xl:grid xl:items-start xl:gap-5"
+        :class="[gridClass, gridColsClass]"
+      >
         <div class="layout-main order-1 min-w-0 xl:order-2" :class="mainClass">
           <slot name="content" />
         </div>
@@ -70,10 +83,15 @@ const asideClass = computed(() => {
           <HomeCategoryList />
           <HomeTagCloud />
         </aside>
-        <aside class="layout-aside order-3 flex flex-col gap-6 xl:sticky xl:self-start xl:pr-1" :class="asideClass">
+        <aside
+          v-if="showRightSidebar"
+          class="layout-aside order-3 flex min-w-0 w-full flex-col gap-6 xl:sticky xl:self-start xl:pr-1"
+          :class="asideClass"
+        >
           <slot v-if="$slots.rightSidebar" name="rightSidebar" />
           <template v-else>
             <HomeStatsCard class="sm:col-span-2 xl:col-span-1" />
+            <HomeCandler />
           </template>
         </aside>
       </div>

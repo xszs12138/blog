@@ -1,6 +1,13 @@
-import type { wlLive2d } from 'wl-live2d'
-
-type Live2dInstance = ReturnType<typeof wlLive2d>
+export interface Live2dInstance {
+  destroy: () => void
+  tips: {
+    stopFade: () => void
+  }
+  onModelLoaded: (callback: () => void) => void
+  stage?: {
+    wrapper?: HTMLElement
+  }
+}
 
 const live2dInstance = shallowRef<Live2dInstance | null>(null)
 

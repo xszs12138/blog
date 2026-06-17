@@ -12,7 +12,8 @@ const props = defineProps<{
     :class="props.class">
     <div
       class="games-glow-inner relative z-1 overflow-hidden rounded-2xl border border-border/50 bg-blog-card shadow-sm transition-[border-color] duration-300 dark:shadow-black/20"
-      :class="cn(props.innerClass)">
+      :class="cn(props.innerClass)"
+    >
       <slot />
     </div>
   </BaseBorderBeam>

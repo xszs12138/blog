@@ -1,16 +1,20 @@
 <script setup lang="ts">
 const { isHeaderVisible } = useHeaderScroll()
+const { isOpen: isMobileNavOpen } = useMobileNavDrawer()
 </script>
 
 <template>
   <header
     class="header-bar pointer-events-none fixed inset-x-0 top-0 z-50"
-    :class="{ 'header-bar--hidden': !isHeaderVisible }"
-    :inert="!isHeaderVisible || undefined"
+    :class="{
+      'header-bar--hidden': !isHeaderVisible && !isMobileNavOpen,
+      'header-bar--drawer-open': isMobileNavOpen,
+    }"
+    :inert="(!isHeaderVisible && !isMobileNavOpen) || undefined"
   >
     <div
-      class="mx-auto w-full max-w-400 px-4 pt-3 sm:px-6 sm:pt-4 lg:px-10 xl:px-12"
-      :class="isHeaderVisible ? 'pointer-events-auto' : 'pointer-events-none'"
+      class="mx-auto w-full max-w-400 px-4 py-2 sm:px-6 sm:py-2.5 lg:px-10 xl:px-10"
+      :class="(isHeaderVisible || isMobileNavOpen) ? 'pointer-events-auto' : 'pointer-events-none'"
     >
       <NavBar />
     </div>
@@ -30,6 +34,10 @@ const { isHeaderVisible } = useHeaderScroll()
   opacity: 0;
   pointer-events: none;
   transition: 0.8s ease;
+}
+
+.header-bar--drawer-open {
+  z-index: 110;
 }
 
 @media (prefers-reduced-motion: reduce) {

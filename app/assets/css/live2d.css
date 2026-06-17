@@ -2,17 +2,11 @@
 .live2d-wrapper.live2d-fixed {
   position: fixed !important;
   z-index: 30 !important;
-  left: 0.75rem !important;
-  right: auto !important;
+  right: 0.75rem !important;
+  left: auto !important;
   bottom: 0rem !important;
   margin: 0 !important;
 }
-
-.live2d-wrapper.live2d-fixed.right {
-  left: 0.75rem !important;
-  right: auto !important;
-}
-
 
 /* 隐藏工具栏、台词气泡与休息按钮 */
 .live2d-menus,

@@ -1,55 +1,49 @@
 <script setup lang="ts">
 import type { GalleryImage } from '~/types/gallery'
-import type { MotionVariants } from '@vueuse/motion'
 
-defineProps<{
-  images: GalleryImage[]
+const props = defineProps<{
+  images?: GalleryImage[]
+  loading?: boolean
 }>()
 
-function itemMotion(index: number): MotionVariants<string> {
-  const stagger = (index % 10) * 55
-  return {
-    initial: {
-      opacity: 0,
-      scale: 0.9,
-      y: 36,
-    },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      y: 0,
-      transition: {
-        delay: stagger,
-        duration: 520,
-        ease: [0.22, 1, 0.36, 1],
-      },
-    },
-    hovered: {
-      scale: 1.02,
-      transition: { duration: 280 },
-    },
+const masonryColumns = { xs: 2, sm: 3, lg: 4, xxl: 5 } as const
+const masonryGutter = { xs: 6, sm: 8 } as const
+
+const masonryItems = computed(() => {
+  if (props.loading) {
+    return Array.from({ length: 12 }, (_, index) => ({
+      key: `gallery-skeleton-${index}`,
+      data: null as GalleryImage | null,
+    }))
   }
-}
+
+  return (props.images ?? []).map(image => ({
+    key: image.key,
+    data: image,
+  }))
+})
 </script>
 
 <template>
-  <div
-    class="gallery-masonry gallery-masonry--cols-2 gallery-masonry--cols-3 gallery-masonry--cols-4 gallery-masonry--cols-5"
+  <AMasonry
+    fresh
+    class="gallery-masonry"
+    :columns="masonryColumns"
+    :gutter="masonryGutter"
+    :items="masonryItems"
+    :aria-busy="loading ? 'true' : undefined"
     role="list"
   >
-    <article
-      v-for="(image, index) in images"
-      :key="image.key"
-      v-motion="itemMotion(index)"
-      class="gallery-masonry__item"
-      role="listitem"
-    >
+    <template #itemRender="{ data: image }">
+      <div v-if="loading || !image" class="gallery-masonry__skeleton" aria-hidden="true" />
       <a
+        v-else
         :href="image.url"
         target="_blank"
         rel="noopener noreferrer"
         class="gallery-masonry__link"
         :aria-label="image.name || '查看原图'"
+        role="listitem"
       >
         <img
           :src="image.thumbnailUrl || image.url"
@@ -61,6 +55,6 @@ function itemMotion(index: number): MotionVariants<string> {
           :height="image.height || undefined"
         >
       </a>
-    </article>
-  </div>
+    </template>
+  </AMasonry>
 </template>

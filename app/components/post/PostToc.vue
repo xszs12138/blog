@@ -89,60 +89,143 @@ function bgClass(state: TocRowState) {
     state.groupPosition === 'end' && 'toc-row__bg--end',
   )
 }
+
+const tocScrollRef = ref<HTMLElement | null>(null)
+const itemRefs = new Map<string, HTMLElement>()
+
+function setItemRef(id: string, el: Element | ComponentPublicInstance | null) {
+  const node = el instanceof HTMLElement ? el : null
+  if (node) {
+    itemRefs.set(id, node)
+  }
+  else {
+    itemRefs.delete(id)
+  }
+}
+
+/** 仅滚动目录容器，避免 scrollIntoView 带动整页 */
+function scrollActiveItemIntoView(behavior: ScrollBehavior = 'smooth') {
+  if (!props.activeId) {
+    return
+  }
+
+  const container = tocScrollRef.value
+  const item = itemRefs.get(props.activeId)
+  if (!container || !item) {
+    return
+  }
+
+  const containerRect = container.getBoundingClientRect()
+  const itemRect = item.getBoundingClientRect()
+  const padding = 8
+
+  if (itemRect.top < containerRect.top + padding) {
+    container.scrollTo({
+      top: container.scrollTop + (itemRect.top - containerRect.top) - padding,
+      behavior,
+    })
+  }
+  else if (itemRect.bottom > containerRect.bottom - padding) {
+    container.scrollTo({
+      top: container.scrollTop + (itemRect.bottom - containerRect.bottom) + padding,
+      behavior,
+    })
+  }
+}
+
+function getScrollBehavior(): ScrollBehavior {
+  if (!import.meta.client) {
+    return 'auto'
+  }
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
+}
+
+watch(() => props.activeId, () => {
+  nextTick(() => {
+    scrollActiveItemIntoView(getScrollBehavior())
+  })
+})
+
+watch(() => props.items.length, () => {
+  nextTick(() => {
+    scrollActiveItemIntoView('auto')
+  })
+})
 </script>
 
 <template>
-  <BaseCard v-if="items.length" class="p-5">
-    <h2 class="mb-4 text-sm font-semibold text-foreground">
+  <BaseCard v-if="items.length" class="post-toc flex flex-col p-5">
+    <h2 class="mb-4 shrink-0 text-sm font-semibold text-foreground">
       文章目录
     </h2>
-    <ul class="toc-list list-none p-0">
-      <li
-        v-for="{ item, inView, isActive, groupPosition } in rows"
-        :key="item.id"
-        :class="cn(rowClass({ item, inView, groupPosition, isActive }), item.level === 3 && 'pl-1')"
-      >
-        <div
-          class="pointer-events-none absolute inset-x-0 inset-y-0"
-          aria-hidden="true"
+    <div ref="tocScrollRef" class="toc-scroll max-h-100 flex-1 overflow-y-auto">
+      <ul class="toc-list list-none p-0">
+        <li
+          v-for="{ item, inView, isActive, groupPosition } in rows"
+          :key="item.id"
+          :ref="el => setItemRef(item.id, el)"
+          :class="cn(rowClass({ item, inView, groupPosition, isActive }), item.level === 3 && 'pl-1')"
         >
-          <div :class="bgClass({ item, inView, groupPosition, isActive })" />
-        </div>
-        <button
-          type="button"
-          class="toc-row__btn relative z-1 flex w-full cursor-pointer items-start gap-2 text-left text-sm leading-relaxed"
-          :aria-current="isActive ? 'location' : undefined"
-          @click="emit('navigate', item.id)"
-        >
-          <span
-            v-if="item.level === 2"
-            class="inline-flex size-6 shrink-0 items-center justify-center rounded-md text-xs font-medium tabular-nums transition-colors duration-300"
-            :class="inView ? 'bg-white/12 text-foreground' : 'bg-black/5 text-muted-foreground dark:bg-white/5'"
-            aria-hidden="true"
-          >
-            {{ item.index }}
-          </span>
-          <span
-            v-else
-            class="inline-flex w-6 shrink-0 justify-center pt-0.5 transition-colors duration-300"
-            :class="inView ? 'text-foreground/85' : 'text-muted-foreground/70'"
-            aria-hidden="true"
-          >
-            •
-          </span>
-          <span
-            class="min-w-0 flex-1 pt-0.5 transition-[color,font-weight] duration-300"
-            :class="inView ? 'font-medium text-foreground' : 'text-muted-foreground'"
-          >
-            {{ item.text }}
-          </span>
-        </button>
-      </li>
-    </ul>
+          <div class="pointer-events-none absolute inset-x-0 inset-y-0" aria-hidden="true">
+            <div :class="bgClass({ item, inView, groupPosition, isActive })" />
+          </div>
+          <button type="button"
+            class="toc-row__btn relative z-1 flex w-full cursor-pointer items-start gap-2 text-left text-sm leading-relaxed"
+            :aria-current="isActive ? 'location' : undefined" @click="emit('navigate', item.id)">
+            <span v-if="item.level === 2"
+              class="inline-flex size-6 shrink-0 items-center justify-center rounded-md text-xs font-medium tabular-nums transition-colors duration-300"
+              :class="inView ? 'bg-white/12 text-foreground' : 'bg-black/5 text-muted-foreground dark:bg-white/5'"
+              aria-hidden="true">
+              {{ item.index }}
+            </span>
+            <span v-else class="inline-flex w-6 shrink-0 justify-center pt-0.5 transition-colors duration-300"
+              :class="inView ? 'text-foreground/85' : 'text-muted-foreground/70'" aria-hidden="true">
+              •
+            </span>
+            <span class="min-w-0 flex-1 pt-0.5 transition-[color,font-weight] duration-300"
+              :class="inView ? 'font-medium text-foreground' : 'text-muted-foreground'">
+              {{ item.text }}
+            </span>
+          </button>
+        </li>
+      </ul>
+    </div>
   </BaseCard>
 </template>
 
 <style scoped>
+.toc-scroll {
+  margin-right: -0.25rem;
+  padding-right: 0.25rem;
+  scrollbar-width: thin;
+  scrollbar-color: rgb(255 255 255 / 12%) transparent;
+}
+
+.toc-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.toc-scroll::-webkit-scrollbar-thumb {
+  background-color: rgb(255 255 255 / 12%);
+  border-radius: 999px;
+}
+
+.toc-scroll::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(255 255 255 / 22%);
+}
+
+:root:not(.dark) .toc-scroll {
+  scrollbar-color: rgb(15 20 25 / 18%) transparent;
+}
+
+:root:not(.dark) .toc-scroll::-webkit-scrollbar-thumb {
+  background-color: rgb(15 20 25 / 18%);
+}
+
+:root:not(.dark) .toc-scroll::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(15 20 25 / 30%);
+}
+
 .toc-list {
   display: flex;
   flex-direction: column;

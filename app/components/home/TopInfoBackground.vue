@@ -2,7 +2,7 @@
 import type { SiteInfo } from '~/types/site'
 
 const { getSite } = useSiteApi()
-const { isDark } = useAppTheme()
+const isDark = useThemeDark()
 const { data: site } = await useAsyncData<SiteInfo | null>('web-site', async () => {
   try {
     return await getSite()

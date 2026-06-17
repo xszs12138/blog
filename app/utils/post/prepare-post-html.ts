@@ -63,12 +63,17 @@ function headingText($: cheerio.CheerioAPI, el: Parameters<typeof $>[0]): string
 
 const HEADING_SELECTOR = 'h2, h3'
 
+/** 消毒富文本 HTML（html 类型文章兜底） */
+export function sanitizePostHtml(rawHtml: string): string {
+  return DOMPurify.sanitize(rawHtml || '', PURIFY_CONFIG)
+}
+
 /** 消毒富文本 HTML，并为 h2/h3 注入 id，生成目录（不含 h1） */
 export function preparePostHtml(rawHtml: string): {
   html: string
   toc: TocItem[]
 } {
-  const sanitized = DOMPurify.sanitize(rawHtml || '', PURIFY_CONFIG)
+  const sanitized = sanitizePostHtml(rawHtml)
   if (!sanitized.trim()) {
     return { html: '', toc: [] }
   }
@@ -109,7 +114,19 @@ export function preparePostHtml(rawHtml: string): {
   }
 }
 
-/** 从 HTML 纯文本估算阅读分钟数 */
+/** 从 Markdown / 纯文本估算阅读分钟数 */
+export function estimateReadingMinutesFromText(text?: string): number {
+  if (!text?.trim()) {
+    return 1
+  }
+  const len = text.replace(/\s+/g, '').length
+  if (!len) {
+    return 1
+  }
+  return Math.max(1, Math.ceil(len / 400))
+}
+
+/** @deprecated 使用 estimateReadingMinutesFromText */
 export function estimateReadingMinutesFromHtml(html?: string): number {
   if (!html?.trim()) {
     return 1

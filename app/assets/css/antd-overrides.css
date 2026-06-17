@@ -1,0 +1,45 @@
+.blog-ant-app {
+  width: 100%;
+  color: inherit;
+}
+
+/* Header 圆形图标按钮：沿用 blog-nav 视觉，底层用 AButton */
+.blog-nav-icon-btn.ant-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  min-width: 2.25rem;
+  padding: 0;
+  border: 1px solid var(--blog-nav-border);
+  background: transparent !important;
+  color: var(--blog-nav-muted);
+  box-shadow: none;
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.blog-nav-icon-btn.ant-btn:not(:disabled):hover {
+  border-color: color-mix(in srgb, var(--blog-accent) 40%, transparent);
+  background: color-mix(in srgb, var(--blog-accent) 10%, transparent) !important;
+  color: var(--blog-nav-fg);
+}
+
+.blog-nav-icon-btn.ant-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--blog-accent) 40%, transparent);
+}
+
+.blog-nav-icon-btn.ant-btn .ant-btn-icon,
+.blog-nav-icon-btn.ant-btn .anticon {
+  display: inline-flex;
+  line-height: 0;
+}
+
+/* 页面已常显滚动条，禁用 antd Modal 对 body 的宽度补偿，避免触发布局断点抖动 */
+body.ant-scrolling-effect {
+  width: 100% !important;
+}

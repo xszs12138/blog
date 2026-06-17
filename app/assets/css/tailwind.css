@@ -8,6 +8,7 @@
 @import "./games-page.css";
 @import "./archive-page.css";
 @import "./gallery-page.css";
+@import "./md-editor-preview.css";
 @import "./live2d.css";
 @import "./canvas-nest.css";
 
@@ -81,7 +82,7 @@
   --blog-surface-hover: rgb(255 255 255 / 6%);
   --blog-surface-muted: rgb(255 255 255 / 5%);
   --blog-chip-bg: rgb(255 255 255 / 6%);
-  --blog-chip-fg: var(--blog-hero-accent);
+  --blog-chip-fg: var(--blog-accent);
   color-scheme: dark;
 }
 
@@ -102,6 +103,7 @@
 
   .blog-card {
     box-shadow: var(--blog-card-shadow);
+    background-color: var(--blog-card-bg) !important;
   }
 
   .blog-card-interactive {
@@ -113,6 +115,23 @@
   .blog-card-interactive:hover {
     box-shadow: var(--blog-card-shadow-hover);
   }
+
+  .blog-tag-chip {
+    color: var(--blog-chip-fg);
+    text-decoration: none;
+  }
+
+  .blog-tag-chip:hover {
+    color: var(--blog-accent);
+  }
+
+  .dark .blog-tag-chip {
+    color: var(--blog-accent);
+  }
+
+  .dark .blog-tag-chip:hover {
+    color: var(--blog-fg);
+  }
 }
 
 @layer base {
@@ -120,8 +139,30 @@
     @apply border-border;
   }
 
+  /* overflow-y: scroll 常显滚动条；不用 scrollbar-gutter，避免与 antdv 弹层双重补偿 */
   html {
     @apply antialiased;
+    overflow-y: scroll;
+    background-color: var(--blog-bg);
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--blog-muted) 55%, transparent) transparent;
+  }
+
+  html::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  html::-webkit-scrollbar-track {
+    background: color-mix(in srgb, var(--blog-border) 65%, transparent);
+  }
+
+  html::-webkit-scrollbar-thumb {
+    background: color-mix(in srgb, var(--blog-muted) 50%, transparent);
+    border-radius: 999px;
+  }
+
+  html::-webkit-scrollbar-thumb:hover {
+    background: color-mix(in srgb, var(--blog-accent) 55%, transparent);
   }
 
   html:not(.dark) body {
@@ -149,3 +190,12 @@
     @apply bg-background text-foreground transition-colors duration-300;
   }
 }
+
+
+html, body {
+  width: 100% !important;
+  height: auto;
+}
+
+
+

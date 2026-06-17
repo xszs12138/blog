@@ -14,13 +14,13 @@ const props = withDefaults(
 </script>
 
 <template>
-  <button :type="type" :aria-label="label" :class="cn(
-    'inline-flex size-9 items-center justify-center rounded-full',
-    'border border-blog-nav-border bg-transparent text-blog-nav-muted',
-    'transition-colors hover:border-accent/40 hover:bg-accent/10 hover:text-blog-nav-fg',
-    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40',
-    props.class,
-  )">
+  <AButton
+    type="text"
+    shape="circle"
+    :html-type="type"
+    :aria-label="label"
+    :class="cn('blog-nav-icon-btn', props.class)"
+  >
     <slot />
-  </button>
+  </AButton>
 </template>

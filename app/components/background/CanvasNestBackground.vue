@@ -2,7 +2,7 @@
 import { canvasNestDark, canvasNestLight } from '~/config/canvas-nest'
 import { startCanvasNest } from '~/utils/background/canvas-nest'
 
-const { isDark } = useAppTheme()
+const isDark = useThemeDark()
 
 let destroy: (() => void) | null = null
 

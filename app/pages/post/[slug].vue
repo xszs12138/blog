@@ -2,7 +2,6 @@
 import type { TocItem } from '~/types/toc'
 import BaseLayout from '~/components/Layout/BaseLayout.vue'
 import { enrichNeighborCovers } from '~/utils/post/enrich-post-neighbors'
-import { preparePostContent } from '~/utils/post/prepare-post-content'
 
 definePageMeta({
   layout: 'default',
@@ -54,14 +53,13 @@ const { data: pageData } = await useAsyncData(
 const post = computed(() => pageData.value?.post ?? null)
 const relatedPosts = computed(() => pageData.value?.relatedPosts ?? [])
 
-const prepared = computed(() => {
-  if (!post.value?.content?.trim()) {
-    return { html: '', toc: [] as TocItem[] }
-  }
-  return preparePostContent(post.value.content, post.value.contentType)
-})
+const articleContent = computed(() => post.value?.content?.trim() ?? '')
 
-const toc = computed(() => prepared.value.toc)
+const toc = ref<TocItem[]>([])
+
+function onCatalogReady(items: TocItem[]) {
+  toc.value = items
+}
 
 const articleBodyRef = ref<{ articleRef: HTMLElement | null } | null>(null)
 const articleRef = computed((): HTMLElement | null => {
@@ -85,42 +83,35 @@ useHead(() => ({
           <div class="min-w-0">
             <BaseCard class="post-detail__card overflow-hidden p-0 shadow-md dark:shadow-black/30">
               <div class="border-b border-border px-5 py-6 md:px-8 md:py-8">
-                <PostDetailHeader :post="post" :content-html="prepared.html" />
+                <PostDetailHeader :post="post" :content="articleContent" />
               </div>
 
               <div class="px-5 py-6 md:px-8 md:py-8">
-                <PostArticleBody v-if="prepared.html" ref="articleBodyRef" :html="prepared.html" />
+                <PostArticleBody v-if="articleContent" ref="articleBodyRef" :content="articleContent"
+                  @catalog-ready="onCatalogReady" />
                 <p v-else class="text-muted-foreground">
                   暂无正文内容。
                 </p>
               </div>
 
-              <div
-                class="space-y-5 border-t border-border px-5 py-6 md:px-8 md:py-7"
-              >
+              <div class="space-y-5 border-t border-border px-5 py-6 md:px-8 md:py-7">
                 <PostShareBar :title="post.title" :slug="post.slug" />
                 <PostCopyright :post="post" />
               </div>
-
-              <div
-                v-if="post.prevPost || post.nextPost || (relatedPosts?.length ?? 0) > 0"
-                class="space-y-6 border-t border-border px-5 py-6 md:px-8 md:py-8"
-              >
-                <PostPrevNextNav
-                  v-if="post.prevPost || post.nextPost"
-                  :prev-post="post.prevPost"
-                  :next-post="post.nextPost"
-                />
+              <div v-if="post.prevPost || post.nextPost || (relatedPosts?.length ?? 0) > 0"
+                class="space-y-6 border-t border-border px-5 py-6 md:px-8 md:py-8">
+                <PostPrevNextNav v-if="post.prevPost || post.nextPost" :prev-post="post.prevPost"
+                  :next-post="post.nextPost" />
                 <PostRelatedList :posts="relatedPosts" />
               </div>
             </BaseCard>
           </div>
         </template>
         <template #rightSidebar>
-          <aside class="flex flex-col gap-6 lg:sticky lg:top-24 lg:self-start">
+          <ClientOnly>
             <PostToc v-if="toc.length" :items="toc" :visible-ids="visibleIds" :active-id="activeId"
-              class=" hidden md:block" @navigate="scrollToHeading" />
-          </aside>
+              class="hidden xl:block" @navigate="scrollToHeading" />
+          </ClientOnly>
         </template>
       </BaseLayout>
     </template>
@@ -135,4 +126,3 @@ useHead(() => ({
     </main>
   </div>
 </template>
-
